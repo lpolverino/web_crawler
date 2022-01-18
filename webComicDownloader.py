@@ -2,7 +2,6 @@
 # webComicDownloader.py - checks some internet comic pages, and downloads the images.
 # it will try to download once a day using linux scheduler
 
-
 import requests, os, bs4, threading, json 
 
 def getLastComic(page):
@@ -17,7 +16,6 @@ def getLastComic(page):
         prevLink = soup.select('a[rel="prev"]')[0]
         return int(prevLink[1:-1]) +1
     
-
 
 def downloadExocomics(startComic, endComic,frstPages):
     for urlNumber in range(startComic  +1, endComic +1):
@@ -45,7 +43,6 @@ def downloadExocomics(startComic, endComic,frstPages):
             imageFile.close()
         if urlNumber == endComic:
             frstPages['exocomics'] = urlNumber
-
 
 def downloadXkcd(startComic, endComic, frstPages):
     frstPages['xkcd'] = endComic
@@ -78,19 +75,14 @@ def downloadXkcd(startComic, endComic, frstPages):
         endComic -= 1
     
 
-            
-
-
 os.makedirs('exocomics', exist_ok=True)      # store comics in ./exocomics
 os.makedirs('xkcd', exist_ok=True)      # store comics in ./xkcd
-
 
 #encontrar los ultimos comics puestos en las carpetas
 exocomics = os.listdir('./exocomics')
 xkcdComics = os.listdir('./xkcd')
 
-
-jsonFIle = open('./pythonShit/automate_boring_stuff/chapter_17/lastPage.json','rb')
+jsonFIle = open('lastPage.json','rb')
 frstPages = json.load(jsonFIle)
 
 # Create and start the Threads objects
@@ -107,14 +99,9 @@ downloadThreadExo.start()
 for downloadThread in downloadThreads:
     downloadThread.join()
 
-
+#update json file
 lastPages = json.dumps(frstPages)
 jsonFIle.close()
-
-jsonFIle = open('./pythonShit/automate_boring_stuff/chapter_17/lastPage.json','w')
+jsonFIle = open('lastPage.json','w')
 jsonFIle.write(lastPages)
-
-
-
-
 print('Done')
