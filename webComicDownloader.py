@@ -1,4 +1,4 @@
-#! python3
+m#! python3
 # webComicDownloader.py - checks some internet comic pages, and downloads the images.
 # it will try to download once a day using linux scheduler
 
@@ -36,7 +36,7 @@ def downloadExocomics(startComic, endComic,frstPages):
             print('Downloading image %s...' % (comicUrl))
             res = requests.get('https://www.exocomics.com' + comicUrl)
             
-            # Save the image to ./xkcd.
+            # Save the image to ./exocomics.
             imageFile = open(os.path.join('exocomics', os.path.basename(comicUrl)), 'wb')
             for chunk in res.iter_content(100000):
                 imageFile.write(chunk)
@@ -55,7 +55,7 @@ def downloadXkcd(startComic, endComic, frstPages):
 
         soup = bs4.BeautifulSoup(res.text, 'html.parser')
 
-        #FInd the url to the comics image
+        #Find the url to the comics image
         comicElem = soup.select('#comic img')
         if comicElem == []:
             print('Could not find comic image.')
@@ -78,7 +78,7 @@ def downloadXkcd(startComic, endComic, frstPages):
 os.makedirs('exocomics', exist_ok=True)      # store comics in ./exocomics
 os.makedirs('xkcd', exist_ok=True)      # store comics in ./xkcd
 
-#encontrar los ultimos comics puestos en las carpetas
+#find the last comic downloaded
 exocomics = os.listdir('./exocomics')
 xkcdComics = os.listdir('./xkcd')
 
